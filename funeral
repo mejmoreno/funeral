@@ -3,7 +3,6 @@
 
 using namespace std;
 
-// Structure to store deceased information
 struct Deceased {
     string name;
     string dateOfDeath;
@@ -13,25 +12,21 @@ struct Deceased {
     double totalBill;
 };
 
-// Global array to store deceased information
 Deceased deceasedList[100];
 int numDeceased = 0;
 
-// List of items and their prices
 const int NUM_ITEMS = 3;
 string items[NUM_ITEMS] = {"Flowers", "Formalin", "Candles"};
 double itemPrices[NUM_ITEMS] = {50.0, 100.0, 20.0};
 
-// Function to generate a unique tag number for the deceased
 string generateTagNumber() {
     string tagNumber;
     for (int i = 0; i < 6; ++i) {
-        tagNumber += '0' + rand() % 10; // Generate random digits
+        tagNumber += '0' + rand() % 10;
     }
     return tagNumber;
 }
 
-// Function to input details of the deceased
 void inputDetails() {
     cout << "Enter the name of the deceased: ";
     cin.ignore();
@@ -42,13 +37,12 @@ void inputDetails() {
     getline(cin, deceasedList[numDeceased].timeOfDeath);
     cout << "Enter the cause of death: ";
     getline(cin, deceasedList[numDeceased].causeOfDeath);
-    deceasedList[numDeceased].tagNumber = generateTagNumber(); // Generate tag number
-    deceasedList[numDeceased].totalBill = 0.0; // Initialize total bill
+    deceasedList[numDeceased].tagNumber = generateTagNumber();
+    deceasedList[numDeceased].totalBill = 0.0;
     cout << "Tag number generated for " << deceasedList[numDeceased].name << ": " << deceasedList[numDeceased].tagNumber << endl;
     numDeceased++;
 }
 
-// Function to remove all details of deceased
 void removeDeceasedDetails() {
     if (numDeceased > 0) {
         cout << "Select deceased to remove details:\n";
@@ -60,9 +54,9 @@ void removeDeceasedDetails() {
         cin >> choice;
         if (choice >= 1 && choice <= numDeceased) {
             for (int i = choice - 1; i < numDeceased - 1; ++i) {
-                deceasedList[i] = deceasedList[i + 1]; // Shift remaining elements to fill the gap
+                deceasedList[i] = deceasedList[i + 1];
             }
-            numDeceased--; // Decrease the count of deceased
+            numDeceased--;
             cout << "Details of deceased removed successfully.\n";
         } else {
             cout << "Invalid choice.\n";
@@ -72,7 +66,6 @@ void removeDeceasedDetails() {
     }
 }
 
-// Function to list all existing deceased along with tag numbers and cause of death
 void listDeceased() {
     if (numDeceased > 0) {
         cout << "List of existing deceased:\n";
@@ -84,7 +77,6 @@ void listDeceased() {
     }
 }
 
-// Function to buy items for deceased
 void buyForDeceased() {
     if (numDeceased > 0) {
         int choice;
@@ -103,7 +95,7 @@ void buyForDeceased() {
             int itemChoice;
             cin >> itemChoice;
             if (itemChoice >= 1 && itemChoice <= NUM_ITEMS) {
-                deceasedList[choice - 1].totalBill += itemPrices[itemChoice - 1]; // Add item price to total bill
+                deceasedList[choice - 1].totalBill += itemPrices[itemChoice - 1];
                 cout << items[itemChoice - 1] << " purchased successfully for " << deceasedList[choice - 1].name << ".\n";
             } else {
                 cout << "Invalid item choice.\n";
@@ -116,7 +108,6 @@ void buyForDeceased() {
     }
 }
 
-// Function to display the program menu
 void displayMenu() {
     cout << "\nFuneral Program Menu\n";
     cout << "1. Input Details of Deceased\n";
@@ -128,20 +119,18 @@ void displayMenu() {
     cout << "Enter your choice: ";
 }
 
-// Function to display information about the program
 void displayProgramInfo() {
     cout << "\nFuneral Program Info\n";
     cout << "This program helps you manage details and arrangements for a funeral.\n";
     cout << "You can record details of the deceased, remove deceased details, list all existing deceased, buy things for them, and more.\n";
 }
 
-// Function to exit the program
 void exitProgram() {
     cout << "Exiting the program...\n";
 }
 
 int main() {
-    srand(time(nullptr)); // Seed the random number generator
+    srand(time(nullptr));
 
     int choice;
 
@@ -173,7 +162,6 @@ int main() {
         }
     } while (choice != 6);
 
-    // Display total bill for all deceased
     if (numDeceased > 0) {
         double totalBill = 0.0;
         for (int i = 0; i < numDeceased; ++i) {
