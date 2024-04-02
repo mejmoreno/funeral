@@ -1,0 +1,186 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+// Structure to store deceased information
+struct Deceased {
+    string name;
+    string dateOfDeath;
+    string timeOfDeath;
+    string causeOfDeath;
+    string tagNumber;
+    double totalBill;
+};
+
+// Global array to store deceased information
+Deceased deceasedList[100];
+int numDeceased = 0;
+
+// List of items and their prices
+const int NUM_ITEMS = 3;
+string items[NUM_ITEMS] = {"Flowers", "Formalin", "Candles"};
+double itemPrices[NUM_ITEMS] = {50.0, 100.0, 20.0};
+
+// Function to generate a unique tag number for the deceased
+string generateTagNumber() {
+    string tagNumber;
+    for (int i = 0; i < 6; ++i) {
+        tagNumber += '0' + rand() % 10; // Generate random digits
+    }
+    return tagNumber;
+}
+
+// Function to input details of the deceased
+void inputDetails() {
+    cout << "Enter the name of the deceased: ";
+    cin.ignore();
+    getline(cin, deceasedList[numDeceased].name);
+    cout << "Enter the date of death: ";
+    getline(cin, deceasedList[numDeceased].dateOfDeath);
+    cout << "Enter the time of death: ";
+    getline(cin, deceasedList[numDeceased].timeOfDeath);
+    cout << "Enter the cause of death: ";
+    getline(cin, deceasedList[numDeceased].causeOfDeath);
+    deceasedList[numDeceased].tagNumber = generateTagNumber(); // Generate tag number
+    deceasedList[numDeceased].totalBill = 0.0; // Initialize total bill
+    cout << "Tag number generated for " << deceasedList[numDeceased].name << ": " << deceasedList[numDeceased].tagNumber << endl;
+    numDeceased++;
+}
+
+// Function to remove all details of deceased
+void removeDeceasedDetails() {
+    if (numDeceased > 0) {
+        cout << "Select deceased to remove details:\n";
+        for (int i = 0; i < numDeceased; ++i) {
+            cout << i + 1 << ". " << deceasedList[i].name << " (Date of death: " << deceasedList[i].dateOfDeath << ") (Time of death: " << deceasedList[i].timeOfDeath << ") (Cause of death: " << deceasedList[i].causeOfDeath << ") (Tag: " << deceasedList[i].tagNumber << ")\n";
+        }
+        int choice;
+        cout << "Enter your choice: ";
+        cin >> choice;
+        if (choice >= 1 && choice <= numDeceased) {
+            for (int i = choice - 1; i < numDeceased - 1; ++i) {
+                deceasedList[i] = deceasedList[i + 1]; // Shift remaining elements to fill the gap
+            }
+            numDeceased--; // Decrease the count of deceased
+            cout << "Details of deceased removed successfully.\n";
+        } else {
+            cout << "Invalid choice.\n";
+        }
+    } else {
+        cout << "No deceased information available.\n";
+    }
+}
+
+// Function to list all existing deceased along with tag numbers and cause of death
+void listDeceased() {
+    if (numDeceased > 0) {
+        cout << "List of existing deceased:\n";
+        for (int i = 0; i < numDeceased; ++i) {
+            cout << i + 1 << ". Name: " << deceasedList[i].name << " | Date of death: " << deceasedList[i].dateOfDeath << " | Time of death: " << deceasedList[i].timeOfDeath << " | Cause of death: " << deceasedList[i].causeOfDeath << " | Tag: " << deceasedList[i].tagNumber << " | Total Bill: PHP " << deceasedList[i].totalBill << endl;
+        }
+    } else {
+        cout << "No deceased information available.\n";
+    }
+}
+
+// Function to buy items for deceased
+void buyForDeceased() {
+    if (numDeceased > 0) {
+        int choice;
+        cout << "Select deceased to buy for:\n";
+        for (int i = 0; i < numDeceased; ++i) {
+            cout << i + 1 << ". " << deceasedList[i].name << " (Tag: " << deceasedList[i].tagNumber << ")\n";
+        }
+        cout << "Enter your choice: ";
+        cin >> choice;
+        if (choice >= 1 && choice <= numDeceased) {
+            cout << "Select item to purchase:\n";
+            for (int i = 0; i < NUM_ITEMS; ++i) {
+                cout << i + 1 << ". " << items[i] << " (PHP " << itemPrices[i] << ")\n";
+            }
+            cout << "Enter your choice: ";
+            int itemChoice;
+            cin >> itemChoice;
+            if (itemChoice >= 1 && itemChoice <= NUM_ITEMS) {
+                deceasedList[choice - 1].totalBill += itemPrices[itemChoice - 1]; // Add item price to total bill
+                cout << items[itemChoice - 1] << " purchased successfully for " << deceasedList[choice - 1].name << ".\n";
+            } else {
+                cout << "Invalid item choice.\n";
+            }
+        } else {
+            cout << "Invalid deceased choice.\n";
+        }
+    } else {
+        cout << "No deceased information available.\n";
+    }
+}
+
+// Function to display the program menu
+void displayMenu() {
+    cout << "\nFuneral Program Menu\n";
+    cout << "1. Input Details of Deceased\n";
+    cout << "2. Remove Deceased Details\n";
+    cout << "3. List All Existing Deceased\n";
+    cout << "4. Buy for Deceased\n";
+    cout << "5. Display Program Info\n";
+    cout << "6. Exit Program\n";
+    cout << "Enter your choice: ";
+}
+
+// Function to display information about the program
+void displayProgramInfo() {
+    cout << "\nFuneral Program Info\n";
+    cout << "This program helps you manage details and arrangements for a funeral.\n";
+    cout << "You can record details of the deceased, remove deceased details, list all existing deceased, buy things for them, and more.\n";
+}
+
+// Function to exit the program
+void exitProgram() {
+    cout << "Exiting the program...\n";
+}
+
+int main() {
+    srand(time(nullptr)); // Seed the random number generator
+
+    int choice;
+
+    do {
+        displayMenu();
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                inputDetails();
+                break;
+            case 2:
+                removeDeceasedDetails();
+                break;
+            case 3:
+                listDeceased();
+                break;
+            case 4:
+                buyForDeceased();
+                break;
+            case 5:
+                displayProgramInfo();
+                break;
+            case 6:
+                exitProgram();
+                break;
+            default:
+                cout << "Invalid choice. Please enter a valid option.\n";
+        }
+    } while (choice != 6);
+
+    // Display total bill for all deceased
+    if (numDeceased > 0) {
+        double totalBill = 0.0;
+        for (int i = 0; i < numDeceased; ++i) {
+            totalBill += deceasedList[i].totalBill;
+        }
+        cout << "Total bill for all deceased: PHP " << totalBill << endl;
+    }
+
+    return 0;
+}
